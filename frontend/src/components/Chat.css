@@ -1,0 +1,150 @@
+/* Chat.css */
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 400px; /* Example height, adjust as needed */
+  width: 350px; /* Example width, adjust as needed */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden; /* Hide scrollbars until needed */
+  font-family: sans-serif;
+  background-color: #f9f9f9;
+}
+
+.chat-header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.chat-header h2 {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.message-list {
+  flex-grow: 1; /* Allow message list to take available space */
+  overflow-y: auto; /* Add scrollbar when messages overflow */
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+}
+
+.message-item {
+  margin-bottom: 8px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* Example alternate styling for sender/receiver - adapt as needed */
+/*
+.message-item.sent {
+  background-color: #dcf8c6;
+  align-self: flex-end; 
+}
+.message-item.received {
+  background-color: #f1f0f0;
+  align-self: flex-start;
+}
+*/
+
+.message-sender {
+  font-weight: bold;
+  margin-right: 5px;
+  color: #333;
+}
+
+.message-text {
+  color: #555;
+}
+
+.no-messages {
+  color: #888;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.chat-input-section {
+  position: relative; /* Needed for absolute positioning of the picker */
+}
+
+/* New styles for the emoji picker container */
+.emoji-picker-container {
+  position: absolute;
+  bottom: 60px; /* Position above the input form (adjust as needed) */
+  left: 10px;   /* Align with the left side of the chat container */
+  right: 10px;  /* Allow it to take available width */
+  z-index: 10;  /* Ensure it appears above other elements */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* Ensure it has a background */
+}
+
+/* Optional: Adjust picker internal styles if needed */
+/* .emoji-picker-react { ... } */
+
+.message-input-form {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #eee;
+  background-color: #f0f0f0;
+  flex-shrink: 0;
+}
+
+/* New wrapper for input and emoji button */
+.input-wrapper {
+  position: relative; /* Allows absolute positioning for the button */
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.message-input {
+  flex-grow: 1;
+  padding: 8px 10px;
+  padding-right: 35px; /* Add space for the emoji button */
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  /* margin-right: 10px; Remove margin, handled by wrapper/button pos */
+  font-size: 0.95em;
+}
+
+/* New emoji button style */
+.emoji-button {
+  position: absolute; /* Position inside the wrapper */
+  right: 5px; /* Position on the right */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2em; /* Adjust emoji size */
+  cursor: pointer;
+  padding: 0 5px; /* Add some padding */
+  color: #555;
+}
+
+.emoji-button:hover {
+  color: #000;
+}
+
+.send-button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease;
+  margin-left: 10px; /* Add margin to separate from input area */
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+} 
