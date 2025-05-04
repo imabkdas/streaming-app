@@ -1,45 +1,89 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Chat from './Chat';
-import './Room.css'; // Import CSS for Room layout
+import {connect, disconnect, sendMessage} from '../services/WebSocket';
+import './Room.css';
 
-// Dummy types for placeholder props
+// Revert ChatMessage interface (remove id, status)
 interface ChatMessage {
-    id: string | number;
+    // id?: string;
+    // status?: 'pending' | 'delivered' | 'failed';
+    roomId: string ;
     sender: string;
     text: string;
     timestamp: number;
-}
+    messageType: 'USER_MESSAGE' | 'LEAVE' | 'JOIN';
+  }
 
 const Room = () => {
-    // Placeholder state for chat messages
-    const [messages, setMessages] = useState<ChatMessage[]>([
-        { id: 1, sender: 'Alice', text: 'Hi Bob! 😊', timestamp: Date.now() - 20000 },
-        { id: 2, sender: 'Bob', text: 'Hello Alice! 👋 How are you?', timestamp: Date.now() - 10000 },
-        { id: 3, sender: 'Alice', text: 'Doing well, thanks! 👍', timestamp: Date.now() },
-    ]);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [username] = useState('User_' + Math.floor(Math.random() * 1000));
+    const { roomId } = useParams<{ roomId: string }>();
 
-    // Placeholder handler for sending messages
+    useEffect(() => {
+        if (!roomId) return;
+
+        connect(roomId, username, (newMessage: ChatMessage) => {
+            // Simplified message receiving logic
+            setMessages(prevMessages => {
+                 // Simple check to prevent adding the exact same message object if received immediately
+                 // More robust checks might compare timestamp/sender/text if needed
+                 const isDuplicate = prevMessages.some(msg =>
+                    msg.timestamp === newMessage.timestamp &&
+                    msg.sender === newMessage.sender &&
+                    msg.text === newMessage.text
+                 );
+
+                 if (!isDuplicate) {
+                    return [...prevMessages, newMessage];
+                 } else {
+                    console.log("Likely duplicate message ignored:", newMessage);
+                    return prevMessages;
+                 }
+            });
+        });
+
+        return () => {
+            disconnect();
+        }
+    },[roomId, username]);
+
     const handleSendMessage = (messageText: string) => {
-        console.log('Room received message to send:', messageText);
-        const newMessage: ChatMessage = {
-            id: Date.now(), // Simple ID for example
-            sender: 'Me', // Replace with actual username
+        if (!roomId) return;
+
+        // Remove messageId generation
+        // const messageId = uuidv4();
+        const message: ChatMessage = {
+            // Remove id and status
+            // id: messageId,
+            // status: 'pending',
+            roomId: roomId,
+            sender: username,
             text: messageText,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            messageType: 'USER_MESSAGE'
         };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
-        // TODO: Send message via WebSocket connection
+
+        // Remove optimistic message add
+        // setMessages(prev => [...prev, message]);
+
+        // Send the message object (without id/status) via WebSocket
+        sendMessage(roomId, message);
     };
 
+    if (!roomId) {
+        return <div>Loading room...</div>;
+    }
+
     return (
-        <div className="room-container"> 
-            <div className="video-area"> 
-                {/* Placeholder for the video player */}
-                <h2>Video Player Area</h2>
+        <div className="room-container">
+            <div className="video-area">
+                <h2>Video Player Area (Room: {roomId})</h2>
+                <p>Your Username: {username}</p>
                 <p>(Video player component will go here)</p>
             </div>
-            <div className="chat-area"> 
-                <Chat messages={messages} onSendMessage={handleSendMessage} />
+            <div className="chat-area">
+                <Chat messages={messages} username={username} onSendMessage={handleSendMessage} />
             </div>
         </div>
     );

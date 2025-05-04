@@ -7,15 +7,14 @@ import './App.css';
 
 
 function App() {
-  return (
-		<Router>
-			<Routes>
-				{/* Use the actual imported Home component here */}
-				<Route path="/" element={<Home />} /> 
-				<Route path='/room' element={<Room />} />
-			</Routes>
-		</Router>
-  );
+	return (
+			<Router>
+				<Routes>
+					<Route path="/" element={<Home />} /> 
+					<Route path='/room/:roomId' element={<Room />} />
+				</Routes>
+			</Router>
+	);
 }
 
 export default App;

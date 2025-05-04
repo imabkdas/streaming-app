@@ -1,36 +1,33 @@
-/* Room.css */
+
 
 .room-container {
   display: flex;
-  /* Make container take full viewport height */
   height: 100vh; 
   width: 100%;
-  overflow: hidden; /* Prevent overall page scroll */
+  overflow: hidden; 
 }
 
 .video-area {
-  flex-grow: 1; /* Allows video area to take remaining space */
-  background-color: #e0e0e0; /* Placeholder background */
+  flex-grow: 1; 
+  background-color: #e0e0e0; 
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow-y: auto; /* Allow scrolling if content overflows */
+  overflow-y: auto; 
 }
 
 .chat-area {
-  /* Use the fixed width defined in Chat.css */
-  /* width: 350px; */ /* Width is controlled by .chat-container inside Chat.css */
-  flex-shrink: 0; /* Prevent chat area from shrinking */
-  height: 100%; /* Make chat area take full height of the container */
-  border-left: 1px solid #bdbdbd; /* Separator line */
+  flex-shrink: 0; 
+  height: 100%;
+  border-left: 1px solid #bdbdbd; 
 }
 
-/* Ensure the Chat component itself stretches */
+
 .chat-area .chat-container {
     height: 100%;
-    width: 100%; /* Take width of the parent .chat-area */
-    border: none; /* Remove border if needed, as parent has border-left */
-    border-radius: 0; /* Remove radius if needed */
+    width: 100%; 
+    border: none; 
+    border-radius: 0;
 } 
